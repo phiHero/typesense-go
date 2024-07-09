@@ -879,23 +879,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  # /conversations:
-  #   get:
-  #     description: Retrieve all past conversations
-  #     operationId: retrieveAllConversations
-  #     responses:
-  #       200:
-  #         content:
-  #           application/json:
-  #             schema:
-  #               items:
-  #                 $ref: '#/components/schemas/ConversationModelResponse'
-  #               type: array
-  #               x-go-type: '[]*ConversationModelResponse'
-  #         description: List of all conversation models
-  #     summary: List all conversation models
-  #     tags:
-  #       - conversations
+  /conversations:
+    get:
+      description: Retrieve all past conversations
+      operationId: retrieveAllConversations
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationsRetrieveSchema'
+          description: List of all past conversations
+      summary: List all past conversations
+      tags:
+        - conversations
   /conversations/models:
     get:
       description: Retrieve all conversation models
@@ -2849,6 +2846,30 @@ components:
         - stopwords
       example: |
         {"stopwords": [{"id": "countries", "stopwords": ["Germany", "France", "Italy"], "locale": "en"}]}
+    ConversationSchema:
+      properties:
+        id:
+          type: integer
+        conversation:
+          items:
+            type: object
+          type: array
+        last_updated:
+          type: integer
+        ttl:
+          description: Time to live. Conversations are stored by default for 24 hours, and then purged.
+          type: integer
+      type: object
+    ConversationsRetrieveSchema:
+      type: object
+      required:
+        - conversations
+      properties:
+        conversations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConversationSchema'
+          x-go-type: '[]*ConversationSchema'
     ConversationModelSchema:
       properties:
         model_name:
