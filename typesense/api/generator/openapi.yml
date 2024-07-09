@@ -975,9 +975,9 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/ConversationModelResponse'
+                  $ref: '#/components/schemas/ConversationModelSchema'
                 type: array
-                x-go-type: '[]*ConversationModelResponse'
+                x-go-type: '[]*ConversationModelSchema'
           description: List of all conversation models
       summary: List all conversation models
       tags:
@@ -989,13 +989,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConversationModelSchema'
+              $ref: '#/components/schemas/ConversationModelCreateSchema'
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConversationModelResponse'
+                $ref: '#/components/schemas/ConversationModelSchema'
           description: Created Conversation Model
         400:
           content:
@@ -1003,6 +1003,72 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
           description: Bad request, see error message for details
+      tags:
+        - conversations
+  /conversations/models/{modelId}:
+    get:
+      description: Retrieve a conversation model
+      operationId: retrieveConversationModel
+      parameters:
+        - name: modelId
+          in: path
+          description: The id of the conversation model to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationModelSchema'
+          description: A conversation model
+      summary: Retrieve a conversation model
+      tags:
+        - conversations
+    put:
+      description: Update a conversation model
+      operationId: updateConversationModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationModelCreateSchema'
+      parameters:
+        - name: modelId
+          in: path
+          description: The id of the conversation model to update
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationModelCreateSchema'
+          description: The conversation model was successfully updated
+      summary: Update a conversation model
+      tags:
+        - conversations
+    delete:
+      description: Delete a conversation model
+      operationId: deleteConversationModel
+      parameters:
+        - name: modelId
+          in: path
+          description: The id of the conversation model to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationModelDeleteSchema'
+          description: The conversation model was successfully deleted
+      summary: Delete a conversation model
       tags:
         - conversations
   /keys:
@@ -2954,7 +3020,7 @@ components:
           items:
             $ref: '#/components/schemas/ConversationSchema'
           x-go-type: '[]*ConversationSchema'
-    ConversationModelSchema:
+    ConversationModelCreateSchema:
       properties:
         model_name:
           description: Name of the LLM model offered by OpenAI, Cloudflare or vLLM
@@ -2978,12 +3044,16 @@ components:
       required:
         - model_name
         - api_key
-        - system_prompt
         - max_bytes
       type: object
-    ConversationModelResponse:
+    ConversationModelDeleteSchema:
+      properties:
+        id:
+          type: string
+      type: object
+    ConversationModelSchema:
       allOf:
-        - $ref: '#/components/schemas/ConversationModelSchema'
+        - $ref: '#/components/schemas/ConversationModelCreateSchema'
         - properties:
             id:
               readOnly: true
