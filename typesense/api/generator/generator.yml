@@ -218,6 +218,8 @@ components:
       properties:
         id:
           type: integer
+      required:
+        - id
     ConversationModelCreateSchema:
       properties:
         account_id:
@@ -281,6 +283,8 @@ components:
         ttl:
           description: Time to live. Conversations are stored by default for 24 hours, and then purged.
           type: integer
+      required:
+        - ttl
     ConversationsRetrieveSchema:
       properties:
         conversations:
