@@ -272,6 +272,8 @@ components:
           type: integer
       required:
         - id
+        - conversation
+        - last_updated
         - ttl
       type: object
     ConversationUpdateSchema:
@@ -2476,6 +2478,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ConversationUpdateSchema'
+        required: true
       responses:
         200:
           content:
@@ -2511,6 +2514,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ConversationModelCreateSchema'
+        required: true
       responses:
         201:
           content:
@@ -2582,6 +2586,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ConversationModelCreateSchema'
+        required: true
       responses:
         200:
           content:
