@@ -997,7 +997,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConversationModelSchema'
+                $ref: '#/components/schemas/ConversationModelCreateSchema'
           description: Created Conversation Model
         400:
           content:
@@ -3065,9 +3065,10 @@ components:
         - $ref: '#/components/schemas/ConversationModelCreateSchema'
         - properties:
             id:
-              readOnly: true
               type: string
           type: object
+          required:
+            - id
   securitySchemes:
     api_key_header:
       type: apiKey

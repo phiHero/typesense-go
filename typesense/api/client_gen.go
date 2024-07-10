@@ -6027,7 +6027,7 @@ func (r RetrieveAllConversationModelsResponse) StatusCode() int {
 type CreateConversationModelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *ConversationModelSchema
+	JSON201      *ConversationModelCreateSchema
 	JSON400      *ApiResponse
 }
 
@@ -8171,7 +8171,7 @@ func ParseCreateConversationModelResponse(rsp *http.Response) (*CreateConversati
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest ConversationModelSchema
+		var dest ConversationModelCreateSchema
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
