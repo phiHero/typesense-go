@@ -220,7 +220,7 @@ components:
           type: integer
       required:
         - id
-    ConversationModelCreateSchema:
+    ConversationModelCreateAndUpdateSchema:
       properties:
         account_id:
           description: LLM service's account ID (only applicable for Cloudflare)
@@ -250,10 +250,12 @@ components:
       properties:
         id:
           type: string
+      required:
+        - id
       type: object
     ConversationModelSchema:
       allOf:
-        - $ref: '#/components/schemas/ConversationModelCreateSchema'
+        - $ref: '#/components/schemas/ConversationModelCreateAndUpdateSchema'
         - properties:
             id:
               type: string
@@ -2518,14 +2520,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConversationModelCreateSchema'
+              $ref: '#/components/schemas/ConversationModelCreateAndUpdateSchema'
         required: true
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConversationModelCreateSchema'
+                $ref: '#/components/schemas/ConversationModelCreateAndUpdateSchema'
           description: Created Conversation Model
         400:
           content:
@@ -2590,14 +2592,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConversationModelCreateSchema'
+              $ref: '#/components/schemas/ConversationModelCreateAndUpdateSchema'
         required: true
       responses:
         200:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConversationModelCreateSchema'
+                $ref: '#/components/schemas/ConversationModelCreateAndUpdateSchema'
           description: The conversation model was successfully updated
       summary: Update a conversation model
       tags:
