@@ -1263,7 +1263,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AnalyticsRuleSchema'
+              $ref: '#/components/schemas/AnalyticsRuleUpsertSchema'
         required: true
       responses:
         201:
@@ -2791,19 +2791,25 @@ components:
             avg:
               type: number
               format: double
-    AnalyticsRuleSchema:
+    AnalyticsRuleUpsertSchema:
       type: object
       required:
-        - name
         - type
         - params
       properties:
-        name:
-          type: string
         type:
           type: string
         params:
           $ref: '#/components/schemas/AnalyticsRuleParameters'
+    AnalyticsRuleSchema:
+      allOf:
+        - $ref: '#/components/schemas/AnalyticsRuleUpsertSchema'
+        - type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
     AnalyticsRuleParameters:
       type: object
       required:

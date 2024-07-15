@@ -50,6 +50,12 @@ type AnalyticsRuleSchema struct {
 	Type   string                  `json:"type"`
 }
 
+// AnalyticsRuleUpsertSchema defines model for AnalyticsRuleUpsertSchema.
+type AnalyticsRuleUpsertSchema struct {
+	Params AnalyticsRuleParameters `json:"params"`
+	Type   string                  `json:"type"`
+}
+
 // AnalyticsRulesRetrieveSchema defines model for AnalyticsRulesRetrieveSchema.
 type AnalyticsRulesRetrieveSchema struct {
 	Rules *[]AnalyticsRuleSchema `json:"rules,omitempty"`
@@ -1082,7 +1088,7 @@ type UpsertAliasJSONRequestBody = CollectionAliasSchema
 type CreateAnalyticsRuleJSONRequestBody = AnalyticsRuleSchema
 
 // UpsertAnalyticsRuleJSONRequestBody defines body for UpsertAnalyticsRule for application/json ContentType.
-type UpsertAnalyticsRuleJSONRequestBody = AnalyticsRuleSchema
+type UpsertAnalyticsRuleJSONRequestBody = AnalyticsRuleUpsertSchema
 
 // CreateCollectionJSONRequestBody defines body for CreateCollection for application/json ContentType.
 type CreateCollectionJSONRequestBody = CollectionSchema

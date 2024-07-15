@@ -22,15 +22,21 @@ components:
         - limit
       type: object
     AnalyticsRuleSchema:
+      allOf:
+        - $ref: '#/components/schemas/AnalyticsRuleUpsertSchema'
+        - properties:
+            name:
+              type: string
+          required:
+            - name
+          type: object
+    AnalyticsRuleUpsertSchema:
       properties:
-        name:
-          type: string
         params:
           $ref: '#/components/schemas/AnalyticsRuleParameters'
         type:
           type: string
       required:
-        - name
         - type
         - params
       type: object
@@ -1324,7 +1330,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AnalyticsRuleSchema'
+              $ref: '#/components/schemas/AnalyticsRuleUpsertSchema'
         description: The Analytics rule to be upserted
         required: true
       responses:
