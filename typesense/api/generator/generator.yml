@@ -1,5 +1,12 @@
 components:
   schemas:
+    AnalyticsRuleDeleteSchema:
+      properties:
+        name:
+          type: string
+      required:
+        - name
+      type: object
     AnalyticsRuleParameters:
       properties:
         destination:
@@ -1279,7 +1286,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalyticsRuleSchema'
+                $ref: '#/components/schemas/AnalyticsRuleDeleteSchema'
           description: Analytics rule deleted
         404:
           content:

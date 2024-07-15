@@ -1323,7 +1323,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalyticsRuleSchema'
+                $ref: '#/components/schemas/AnalyticsRuleDeleteSchema'
         404:
           description: Analytics rule not found
           content:
@@ -2801,6 +2801,13 @@ components:
           type: string
         params:
           $ref: '#/components/schemas/AnalyticsRuleParameters'
+    AnalyticsRuleDeleteSchema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
     AnalyticsRuleSchema:
       allOf:
         - $ref: '#/components/schemas/AnalyticsRuleUpsertSchema'

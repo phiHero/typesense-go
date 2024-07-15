@@ -32,6 +32,11 @@ const (
 	Reject         ImportDocumentsParamsDirtyValues = "reject"
 )
 
+// AnalyticsRuleDeleteSchema defines model for AnalyticsRuleDeleteSchema.
+type AnalyticsRuleDeleteSchema struct {
+	Name string `json:"name"`
+}
+
 // AnalyticsRuleParameters defines model for AnalyticsRuleParameters.
 type AnalyticsRuleParameters struct {
 	Destination struct {

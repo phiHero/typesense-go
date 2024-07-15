@@ -5035,7 +5035,7 @@ func (r CreateAnalyticsRuleResponse) StatusCode() int {
 type DeleteAnalyticsRuleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *AnalyticsRuleSchema
+	JSON200      *AnalyticsRuleDeleteSchema
 	JSON404      *ApiResponse
 }
 
@@ -6752,7 +6752,7 @@ func ParseDeleteAnalyticsRuleResponse(rsp *http.Response) (*DeleteAnalyticsRuleR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AnalyticsRuleSchema
+		var dest AnalyticsRuleDeleteSchema
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
