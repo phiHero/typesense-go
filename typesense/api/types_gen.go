@@ -32,6 +32,13 @@ const (
 	Reject         ImportDocumentsParamsDirtyValues = "reject"
 )
 
+// AnalyticsEventCreateSchema defines model for AnalyticsEventCreateSchema.
+type AnalyticsEventCreateSchema struct {
+	Data *map[string]interface{} `json:"data,omitempty"`
+	Name string                  `json:"name"`
+	Type string                  `json:"type"`
+}
+
 // AnalyticsRuleDeleteSchema defines model for AnalyticsRuleDeleteSchema.
 type AnalyticsRuleDeleteSchema struct {
 	Name string `json:"name"`
@@ -1088,6 +1095,9 @@ type TakeSnapshotParams struct {
 
 // UpsertAliasJSONRequestBody defines body for UpsertAlias for application/json ContentType.
 type UpsertAliasJSONRequestBody = CollectionAliasSchema
+
+// CreateAnalyticsEventJSONRequestBody defines body for CreateAnalyticsEvent for application/json ContentType.
+type CreateAnalyticsEventJSONRequestBody = AnalyticsEventCreateSchema
 
 // CreateAnalyticsRuleJSONRequestBody defines body for CreateAnalyticsRule for application/json ContentType.
 type CreateAnalyticsRuleJSONRequestBody = AnalyticsRuleSchema

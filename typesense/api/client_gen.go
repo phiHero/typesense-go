@@ -103,6 +103,11 @@ type ClientInterface interface {
 
 	UpsertAlias(ctx context.Context, aliasName string, body UpsertAliasJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateAnalyticsEventWithBody request with any body
+	CreateAnalyticsEventWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateAnalyticsEvent(ctx context.Context, body CreateAnalyticsEventJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// RetrieveAnalyticsRules request
 	RetrieveAnalyticsRules(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -312,6 +317,30 @@ func (c *Client) UpsertAliasWithBody(ctx context.Context, aliasName string, cont
 
 func (c *Client) UpsertAlias(ctx context.Context, aliasName string, body UpsertAliasJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpsertAliasRequest(c.Server, aliasName, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAnalyticsEventWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAnalyticsEventRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAnalyticsEvent(ctx context.Context, body CreateAnalyticsEventJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAnalyticsEventRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1139,6 +1168,46 @@ func NewUpsertAliasRequestWithBody(server string, aliasName string, contentType 
 	}
 
 	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCreateAnalyticsEventRequest calls the generic CreateAnalyticsEvent builder with application/json body
+func NewCreateAnalyticsEventRequest(server string, body CreateAnalyticsEventJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateAnalyticsEventRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateAnalyticsEventRequestWithBody generates requests for CreateAnalyticsEvent with any type of body
+func NewCreateAnalyticsEventRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/analytics/events")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -4736,6 +4805,11 @@ type ClientWithResponsesInterface interface {
 
 	UpsertAliasWithResponse(ctx context.Context, aliasName string, body UpsertAliasJSONRequestBody, reqEditors ...RequestEditorFn) (*UpsertAliasResponse, error)
 
+	// CreateAnalyticsEventWithBodyWithResponse request with any body
+	CreateAnalyticsEventWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAnalyticsEventResponse, error)
+
+	CreateAnalyticsEventWithResponse(ctx context.Context, body CreateAnalyticsEventJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAnalyticsEventResponse, error)
+
 	// RetrieveAnalyticsRulesWithResponse request
 	RetrieveAnalyticsRulesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveAnalyticsRulesResponse, error)
 
@@ -4981,6 +5055,29 @@ func (r UpsertAliasResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpsertAliasResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateAnalyticsEventResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *AnalyticsEventCreateSchema
+	JSON400      *ApiResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateAnalyticsEventResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateAnalyticsEventResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -6046,6 +6143,23 @@ func (c *ClientWithResponses) UpsertAliasWithResponse(ctx context.Context, alias
 	return ParseUpsertAliasResponse(rsp)
 }
 
+// CreateAnalyticsEventWithBodyWithResponse request with arbitrary body returning *CreateAnalyticsEventResponse
+func (c *ClientWithResponses) CreateAnalyticsEventWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAnalyticsEventResponse, error) {
+	rsp, err := c.CreateAnalyticsEventWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAnalyticsEventResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateAnalyticsEventWithResponse(ctx context.Context, body CreateAnalyticsEventJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAnalyticsEventResponse, error) {
+	rsp, err := c.CreateAnalyticsEvent(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAnalyticsEventResponse(rsp)
+}
+
 // RetrieveAnalyticsRulesWithResponse request returning *RetrieveAnalyticsRulesResponse
 func (c *ClientWithResponses) RetrieveAnalyticsRulesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RetrieveAnalyticsRulesResponse, error) {
 	rsp, err := c.RetrieveAnalyticsRules(ctx, reqEditors...)
@@ -6672,6 +6786,39 @@ func ParseUpsertAliasResponse(rsp *http.Response) (*UpsertAliasResponse, error) 
 			return nil, err
 		}
 		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateAnalyticsEventResponse parses an HTTP response from a CreateAnalyticsEventWithResponse call
+func ParseCreateAnalyticsEventResponse(rsp *http.Response) (*CreateAnalyticsEventResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateAnalyticsEventResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest AnalyticsEventCreateSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ApiResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 

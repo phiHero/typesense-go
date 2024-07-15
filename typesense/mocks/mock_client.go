@@ -42,6 +42,86 @@ func (m *MockAPIClientInterface) EXPECT() *MockAPIClientInterfaceMockRecorder {
 	return m.recorder
 }
 
+// CreateAnalyticsEvent mocks base method.
+func (m *MockAPIClientInterface) CreateAnalyticsEvent(ctx context.Context, body api.CreateAnalyticsEventJSONRequestBody, reqEditors ...api.RequestEditorFn) (*http.Response, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, body}
+	for _, a := range reqEditors {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateAnalyticsEvent", varargs...)
+	ret0, _ := ret[0].(*http.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAnalyticsEvent indicates an expected call of CreateAnalyticsEvent.
+func (mr *MockAPIClientInterfaceMockRecorder) CreateAnalyticsEvent(ctx, body any, reqEditors ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, body}, reqEditors...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAnalyticsEvent", reflect.TypeOf((*MockAPIClientInterface)(nil).CreateAnalyticsEvent), varargs...)
+}
+
+// CreateAnalyticsEventWithBody mocks base method.
+func (m *MockAPIClientInterface) CreateAnalyticsEventWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...api.RequestEditorFn) (*http.Response, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, contentType, body}
+	for _, a := range reqEditors {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateAnalyticsEventWithBody", varargs...)
+	ret0, _ := ret[0].(*http.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAnalyticsEventWithBody indicates an expected call of CreateAnalyticsEventWithBody.
+func (mr *MockAPIClientInterfaceMockRecorder) CreateAnalyticsEventWithBody(ctx, contentType, body any, reqEditors ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, contentType, body}, reqEditors...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAnalyticsEventWithBody", reflect.TypeOf((*MockAPIClientInterface)(nil).CreateAnalyticsEventWithBody), varargs...)
+}
+
+// CreateAnalyticsEventWithBodyWithResponse mocks base method.
+func (m *MockAPIClientInterface) CreateAnalyticsEventWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...api.RequestEditorFn) (*api.CreateAnalyticsEventResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, contentType, body}
+	for _, a := range reqEditors {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateAnalyticsEventWithBodyWithResponse", varargs...)
+	ret0, _ := ret[0].(*api.CreateAnalyticsEventResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAnalyticsEventWithBodyWithResponse indicates an expected call of CreateAnalyticsEventWithBodyWithResponse.
+func (mr *MockAPIClientInterfaceMockRecorder) CreateAnalyticsEventWithBodyWithResponse(ctx, contentType, body any, reqEditors ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, contentType, body}, reqEditors...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAnalyticsEventWithBodyWithResponse", reflect.TypeOf((*MockAPIClientInterface)(nil).CreateAnalyticsEventWithBodyWithResponse), varargs...)
+}
+
+// CreateAnalyticsEventWithResponse mocks base method.
+func (m *MockAPIClientInterface) CreateAnalyticsEventWithResponse(ctx context.Context, body api.CreateAnalyticsEventJSONRequestBody, reqEditors ...api.RequestEditorFn) (*api.CreateAnalyticsEventResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, body}
+	for _, a := range reqEditors {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateAnalyticsEventWithResponse", varargs...)
+	ret0, _ := ret[0].(*api.CreateAnalyticsEventResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAnalyticsEventWithResponse indicates an expected call of CreateAnalyticsEventWithResponse.
+func (mr *MockAPIClientInterfaceMockRecorder) CreateAnalyticsEventWithResponse(ctx, body any, reqEditors ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, body}, reqEditors...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAnalyticsEventWithResponse", reflect.TypeOf((*MockAPIClientInterface)(nil).CreateAnalyticsEventWithResponse), varargs...)
+}
+
 // CreateAnalyticsRule mocks base method.
 func (m *MockAPIClientInterface) CreateAnalyticsRule(ctx context.Context, body api.CreateAnalyticsRuleJSONRequestBody, reqEditors ...api.RequestEditorFn) (*http.Response, error) {
 	m.ctrl.T.Helper()

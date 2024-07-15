@@ -1,5 +1,17 @@
 components:
   schemas:
+    AnalyticsEventCreateSchema:
+      properties:
+        data:
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      required:
+        - type
+        - name
+      type: object
     AnalyticsRuleDeleteSchema:
       properties:
         name:
@@ -1230,6 +1242,33 @@ paths:
       summary: Create or update a collection alias
       tags:
         - collections
+  /analytics/events:
+    post:
+      description: Sending events for analytics e.g rank search results based on popularity.
+      operationId: createAnalyticsEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsEventCreateSchema'
+        description: The Analytics event to be created
+        required: true
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsEventCreateSchema'
+          description: Analytics event successfully created
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Bad request, see error message for details
+      summary: Create an analytics event
+      tags:
+        - analytics
   /analytics/rules:
     get:
       description: Retrieve the details of all analytics rules

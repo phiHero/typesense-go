@@ -1204,6 +1204,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+  /analytics/events:
+    post:
+      tags:
+        - analytics
+      summary: Create an analytics event
+      description: Sending events for analytics e.g rank search results based on popularity.
+      operationId: createAnalyticsEvent
+      requestBody:
+        description: The Analytics event to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsEventCreateSchema'
+        required: true
+      responses:
+        201:
+          description: Analytics event successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsEventCreateSchema'
+        400:
+          description: Bad request, see error message for details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
   /analytics/rules:
     post:
       tags:
@@ -2791,6 +2818,18 @@ components:
             avg:
               type: number
               format: double
+    AnalyticsEventCreateSchema:
+      type: object
+      required:
+        - type
+        - name
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        data:
+          type: object
     AnalyticsRuleUpsertSchema:
       type: object
       required:
