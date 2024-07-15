@@ -45,7 +45,7 @@ func TestAnalyticsRulesRetrieveOnHttpStatusErrorCodeReturnsError(t *testing.T) {
 	defer server.Close()
 
 	_, err := client.Analytics().Rules().Retrieve(context.Background())
-	assert.NotNil(t, err)
+	assert.ErrorContains(t, err, "status: 409")
 }
 
 func TestAnalyticsRulesUpsert(t *testing.T) {
@@ -95,5 +95,5 @@ func TestAnalyticsRulesUpsertOnHttpStatusErrorCodeReturnsError(t *testing.T) {
 	defer server.Close()
 
 	_, err := client.Analytics().Rules().Upsert(context.Background(), "test-rule", &api.AnalyticsRuleUpsertSchema{})
-	assert.NotNil(t, err)
+	assert.ErrorContains(t, err, "status: 409")
 }
