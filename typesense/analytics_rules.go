@@ -8,7 +8,7 @@ import (
 
 type AnalyticsRulesInterface interface {
 	Upsert(ctx context.Context, ruleName string, ruleSchema *api.AnalyticsRuleUpsertSchema) (*api.AnalyticsRuleSchema, error)
-	Retrieve(ctx context.Context) ([]api.AnalyticsRuleSchema, error)
+	Retrieve(ctx context.Context) ([]*api.AnalyticsRuleSchema, error)
 }
 
 type analyticsRules struct {
@@ -27,7 +27,7 @@ func (a *analyticsRules) Upsert(ctx context.Context, ruleName string, ruleSchema
 	return response.JSON201, nil
 }
 
-func (a *analyticsRules) Retrieve(ctx context.Context) ([]api.AnalyticsRuleSchema, error) {
+func (a *analyticsRules) Retrieve(ctx context.Context) ([]*api.AnalyticsRuleSchema, error) {
 	response, err := a.apiClient.RetrieveAnalyticsRulesWithResponse(ctx)
 	if err != nil {
 		return nil, err

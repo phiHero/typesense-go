@@ -2884,6 +2884,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AnalyticsRuleSchema'
+          x-go-type: '[]*AnalyticsRuleSchema'
     StopwordsSetUpsertSchema:
       type: object
       properties:

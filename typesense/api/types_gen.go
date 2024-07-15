@@ -70,7 +70,7 @@ type AnalyticsRuleUpsertSchema struct {
 
 // AnalyticsRulesRetrieveSchema defines model for AnalyticsRulesRetrieveSchema.
 type AnalyticsRulesRetrieveSchema struct {
-	Rules *[]AnalyticsRuleSchema `json:"rules,omitempty"`
+	Rules *[]*AnalyticsRuleSchema `json:"rules,omitempty"`
 }
 
 // ApiKey defines model for ApiKey.

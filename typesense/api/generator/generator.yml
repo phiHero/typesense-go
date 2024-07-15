@@ -65,6 +65,7 @@ components:
           items:
             $ref: '#/components/schemas/AnalyticsRuleSchema'
           type: array
+          x-go-type: '[]*AnalyticsRuleSchema'
       type: object
     ApiKey:
       allOf:
