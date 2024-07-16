@@ -5178,7 +5178,7 @@ func (r RetrieveAnalyticsRuleResponse) StatusCode() int {
 type UpsertAnalyticsRuleResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *AnalyticsRuleSchema
+	JSON200      *AnalyticsRuleSchema
 	JSON400      *ApiResponse
 }
 
@@ -6964,12 +6964,12 @@ func ParseUpsertAnalyticsRuleResponse(rsp *http.Response) (*UpsertAnalyticsRuleR
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest AnalyticsRuleSchema
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON201 = &dest
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest ApiResponse

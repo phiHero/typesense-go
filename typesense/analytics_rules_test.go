@@ -27,7 +27,6 @@ func TestAnalyticsRulesRetrieve(t *testing.T) {
 			Rules: &expectedData,
 		})
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
 		w.Write(data)
 	})
 	defer server.Close()
@@ -50,14 +49,14 @@ func TestAnalyticsRulesRetrieveOnHttpStatusErrorCodeReturnsError(t *testing.T) {
 
 func TestAnalyticsRulesUpsert(t *testing.T) {
 	upsertData := &api.AnalyticsRuleUpsertSchema{
-		Type: "type2",
+		Type: api.AnalyticsRuleUpsertSchemaTypeCounter,
 		Params: api.AnalyticsRuleParameters{
 			Limit: 100,
 		},
 	}
 	expectedData := &api.AnalyticsRuleSchema{
 		Name:   "test-rule",
-		Type:   upsertData.Type,
+		Type:   api.AnalyticsRuleSchemaType(upsertData.Type),
 		Params: upsertData.Params,
 	}
 
@@ -72,12 +71,11 @@ func TestAnalyticsRulesUpsert(t *testing.T) {
 
 		data := jsonEncode(t, api.AnalyticsRuleSchema{
 			Name:   expectedData.Name,
-			Type:   upsertData.Type,
+			Type:   api.AnalyticsRuleSchemaType(upsertData.Type),
 			Params: upsertData.Params,
 		})
 
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
 		w.Write(data)
 	})
 	defer server.Close()

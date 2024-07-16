@@ -22,23 +22,49 @@ components:
     AnalyticsRuleParameters:
       properties:
         destination:
-          properties:
-            collection:
-              type: string
-          type: object
+          $ref: '#/components/schemas/AnalyticsRuleParametersDestination'
         limit:
           type: integer
         source:
-          properties:
-            collections:
-              items:
-                type: string
-              type: array
-          type: object
+          $ref: '#/components/schemas/AnalyticsRuleParametersSource'
       required:
         - source
         - destination
         - limit
+      type: object
+    AnalyticsRuleParametersDestination:
+      properties:
+        collection:
+          type: string
+        counter_field:
+          type: string
+      required:
+        - collection
+      type: object
+    AnalyticsRuleParametersSource:
+      properties:
+        collections:
+          items:
+            type: string
+          type: array
+        events:
+          items:
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+              weight:
+                format: double
+                type: number
+            required:
+              - type
+              - weight
+              - name
+            type: object
+          type: array
+      required:
+        - collections
       type: object
     AnalyticsRuleSchema:
       allOf:
@@ -54,6 +80,10 @@ components:
         params:
           $ref: '#/components/schemas/AnalyticsRuleParameters'
         type:
+          enum:
+            - popular_queries
+            - nohits_queries
+            - counter
           type: string
       required:
         - type
@@ -1381,7 +1411,7 @@ paths:
         description: The Analytics rule to be upserted
         required: true
       responses:
-        201:
+        200:
           content:
             application/json:
               schema:

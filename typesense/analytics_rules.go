@@ -21,10 +21,10 @@ func (a *analyticsRules) Upsert(ctx context.Context, ruleName string, ruleSchema
 	if err != nil {
 		return nil, err
 	}
-	if response.JSON201 == nil {
+	if response.JSON200 == nil {
 		return nil, &HTTPError{Status: response.StatusCode(), Body: response.Body}
 	}
-	return response.JSON201, nil
+	return response.JSON200, nil
 }
 
 func (a *analyticsRules) Retrieve(ctx context.Context) ([]*api.AnalyticsRuleSchema, error) {

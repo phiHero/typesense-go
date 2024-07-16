@@ -13,6 +13,20 @@ const (
 	Api_key_headerScopes = "api_key_header.Scopes"
 )
 
+// Defines values for AnalyticsRuleSchemaType.
+const (
+	AnalyticsRuleSchemaTypeCounter        AnalyticsRuleSchemaType = "counter"
+	AnalyticsRuleSchemaTypeNohitsQueries  AnalyticsRuleSchemaType = "nohits_queries"
+	AnalyticsRuleSchemaTypePopularQueries AnalyticsRuleSchemaType = "popular_queries"
+)
+
+// Defines values for AnalyticsRuleUpsertSchemaType.
+const (
+	AnalyticsRuleUpsertSchemaTypeCounter        AnalyticsRuleUpsertSchemaType = "counter"
+	AnalyticsRuleUpsertSchemaTypeNohitsQueries  AnalyticsRuleUpsertSchemaType = "nohits_queries"
+	AnalyticsRuleUpsertSchemaTypePopularQueries AnalyticsRuleUpsertSchemaType = "popular_queries"
+)
+
 // Defines values for SearchOverrideRuleMatch.
 const (
 	Contains SearchOverrideRuleMatch = "contains"
@@ -46,27 +60,45 @@ type AnalyticsRuleDeleteSchema struct {
 
 // AnalyticsRuleParameters defines model for AnalyticsRuleParameters.
 type AnalyticsRuleParameters struct {
-	Destination struct {
-		Collection *string `json:"collection,omitempty"`
-	} `json:"destination"`
-	Limit  int `json:"limit"`
-	Source struct {
-		Collections *[]string `json:"collections,omitempty"`
-	} `json:"source"`
+	Destination AnalyticsRuleParametersDestination `json:"destination"`
+	Limit       int                                `json:"limit"`
+	Source      AnalyticsRuleParametersSource      `json:"source"`
+}
+
+// AnalyticsRuleParametersDestination defines model for AnalyticsRuleParametersDestination.
+type AnalyticsRuleParametersDestination struct {
+	Collection   string  `json:"collection"`
+	CounterField *string `json:"counter_field,omitempty"`
+}
+
+// AnalyticsRuleParametersSource defines model for AnalyticsRuleParametersSource.
+type AnalyticsRuleParametersSource struct {
+	Collections []string `json:"collections"`
+	Events      *[]struct {
+		Name   string  `json:"name"`
+		Type   string  `json:"type"`
+		Weight float64 `json:"weight"`
+	} `json:"events,omitempty"`
 }
 
 // AnalyticsRuleSchema defines model for AnalyticsRuleSchema.
 type AnalyticsRuleSchema struct {
 	Name   string                  `json:"name"`
 	Params AnalyticsRuleParameters `json:"params"`
-	Type   string                  `json:"type"`
+	Type   AnalyticsRuleSchemaType `json:"type"`
 }
+
+// AnalyticsRuleSchemaType defines model for AnalyticsRuleSchema.Type.
+type AnalyticsRuleSchemaType string
 
 // AnalyticsRuleUpsertSchema defines model for AnalyticsRuleUpsertSchema.
 type AnalyticsRuleUpsertSchema struct {
-	Params AnalyticsRuleParameters `json:"params"`
-	Type   string                  `json:"type"`
+	Params AnalyticsRuleParameters       `json:"params"`
+	Type   AnalyticsRuleUpsertSchemaType `json:"type"`
 }
+
+// AnalyticsRuleUpsertSchemaType defines model for AnalyticsRuleUpsertSchema.Type.
+type AnalyticsRuleUpsertSchemaType string
 
 // AnalyticsRulesRetrieveSchema defines model for AnalyticsRulesRetrieveSchema.
 type AnalyticsRulesRetrieveSchema struct {
