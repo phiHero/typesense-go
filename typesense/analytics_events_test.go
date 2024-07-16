@@ -28,7 +28,9 @@ func TestAnalyticsEventsCreate(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, *expectedData, reqBody)
 
-		data := jsonEncode(t, expectedData)
+		data := jsonEncode(t, api.AnalyticsEventCreateResponse{
+			Ok: true,
+		})
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
@@ -38,7 +40,7 @@ func TestAnalyticsEventsCreate(t *testing.T) {
 
 	res, err := client.Analytics().Events().Create(context.Background(), expectedData)
 	assert.NoError(t, err)
-	assert.Equal(t, expectedData, res)
+	assert.True(t, res.Ok)
 }
 
 func TestAnalyticsEventsCreateOnHttpStatusErrorCodeReturnsError(t *testing.T) {

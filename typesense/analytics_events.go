@@ -7,14 +7,14 @@ import (
 )
 
 type AnalyticsEventsInterface interface {
-	Create(ctx context.Context, eventSchema *api.AnalyticsEventCreateSchema) (*api.AnalyticsEventCreateSchema, error)
+	Create(ctx context.Context, eventSchema *api.AnalyticsEventCreateSchema) (*api.AnalyticsEventCreateResponse, error)
 }
 
 type analyticsEvents struct {
 	apiClient APIClientInterface
 }
 
-func (a *analyticsEvents) Create(ctx context.Context, eventSchema *api.AnalyticsEventCreateSchema) (*api.AnalyticsEventCreateSchema, error) {
+func (a *analyticsEvents) Create(ctx context.Context, eventSchema *api.AnalyticsEventCreateSchema) (*api.AnalyticsEventCreateResponse, error) {
 	response, err := a.apiClient.CreateAnalyticsEventWithResponse(ctx, api.CreateAnalyticsEventJSONRequestBody(*eventSchema))
 	if err != nil {
 		return nil, err

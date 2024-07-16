@@ -5064,7 +5064,7 @@ func (r UpsertAliasResponse) StatusCode() int {
 type CreateAnalyticsEventResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *AnalyticsEventCreateSchema
+	JSON201      *AnalyticsEventCreateResponse
 	JSON400      *ApiResponse
 }
 
@@ -6807,7 +6807,7 @@ func ParseCreateAnalyticsEventResponse(rsp *http.Response) (*CreateAnalyticsEven
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest AnalyticsEventCreateSchema
+		var dest AnalyticsEventCreateResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

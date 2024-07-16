@@ -46,6 +46,11 @@ const (
 	Reject         ImportDocumentsParamsDirtyValues = "reject"
 )
 
+// AnalyticsEventCreateResponse defines model for AnalyticsEventCreateResponse.
+type AnalyticsEventCreateResponse struct {
+	Ok bool `json:"ok"`
+}
+
 // AnalyticsEventCreateSchema defines model for AnalyticsEventCreateSchema.
 type AnalyticsEventCreateSchema struct {
 	Data *map[string]interface{} `json:"data,omitempty"`
