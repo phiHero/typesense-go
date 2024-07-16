@@ -322,7 +322,7 @@ func newPresetFromMultiSearchSearchesParameter(presetName string) *api.PresetSch
 	return preset
 }
 
-func newAnalyticsRuleUpsertSchema(collectionName string) *api.AnalyticsRuleUpsertSchema {
+func newAnalyticsRuleUpsertSchema(collectionName string, eventName string) *api.AnalyticsRuleUpsertSchema {
 	return &api.AnalyticsRuleUpsertSchema{
 		Type: "counter",
 		Params: api.AnalyticsRuleParameters{
@@ -333,7 +333,7 @@ func newAnalyticsRuleUpsertSchema(collectionName string) *api.AnalyticsRuleUpser
 					Type   string  "json:\"type\""
 					Weight float64 "json:\"weight\""
 				}{
-					{Type: "click", Weight: 1, Name: "products_click_event"},
+					{Type: "click", Weight: 1, Name: eventName},
 				},
 			},
 			Destination: api.AnalyticsRuleParametersDestination{
@@ -344,7 +344,7 @@ func newAnalyticsRuleUpsertSchema(collectionName string) *api.AnalyticsRuleUpser
 	}
 }
 
-func newAnalyticsRule(ruleName string, collectionName string) *api.AnalyticsRuleSchema {
+func newAnalyticsRule(ruleName string, collectionName string, eventName string) *api.AnalyticsRuleSchema {
 	return &api.AnalyticsRuleSchema{
 		Name: ruleName,
 		Type: "counter",
@@ -356,7 +356,7 @@ func newAnalyticsRule(ruleName string, collectionName string) *api.AnalyticsRule
 					Type   string  "json:\"type\""
 					Weight float64 "json:\"weight\""
 				}{
-					{Type: "click", Weight: 1, Name: "products_click_event"},
+					{Type: "click", Weight: 1, Name: eventName},
 				},
 			},
 			Destination: api.AnalyticsRuleParametersDestination{
@@ -408,9 +408,9 @@ func createNewPreset(t *testing.T, presetValueIsFromSearchParameters ...bool) (s
 	return presetName, result
 }
 
-func createNewAnalyticsRule(t *testing.T, collectionName string) *api.AnalyticsRuleSchema {
+func createNewAnalyticsRule(t *testing.T, collectionName string, eventName string) *api.AnalyticsRuleSchema {
 	t.Helper()
-	ruleSchema := newAnalyticsRuleUpsertSchema(collectionName)
+	ruleSchema := newAnalyticsRuleUpsertSchema(collectionName, eventName)
 	ruleName := newUUIDName("test-rule")
 
 	result, err := typesenseClient.Analytics().Rules().Upsert(context.Background(), ruleName, ruleSchema)

@@ -8,21 +8,15 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/typesense/typesense-go/typesense/api"
 )
 
-func analyticsRulesCleanUp() {
-	result, _ := typesenseClient.Analytics().Rules().Retrieve(context.Background())
-	for _, rule := range result {
-		typesenseClient.Analytics().Rule(rule.Name).Delete(context.Background())
-	}
-}
 func TestAnalyticsRulesUpsert(t *testing.T) {
-	t.Cleanup(analyticsRulesCleanUp)
-
 	collectionName := createNewCollection(t, "analytics-rules-collection")
-	ruleSchema := newAnalyticsRuleUpsertSchema(collectionName)
+	eventName := newUUIDName("event")
+	ruleSchema := newAnalyticsRuleUpsertSchema(collectionName, eventName)
 	ruleName := newUUIDName("test-rule")
-	expectedData := newAnalyticsRule(ruleName, collectionName)
+	expectedData := newAnalyticsRule(ruleName, collectionName, eventName)
 
 	result, err := typesenseClient.Analytics().Rules().Upsert(context.Background(), ruleName, ruleSchema)
 
@@ -31,15 +25,23 @@ func TestAnalyticsRulesUpsert(t *testing.T) {
 }
 
 func TestAnalyticsRulesRetrieve(t *testing.T) {
-	t.Cleanup(analyticsRulesCleanUp)
-
 	collectionName := createNewCollection(t, "analytics-rules-collection")
-	expectedRule := createNewAnalyticsRule(t, collectionName)
+	eventName := newUUIDName("event")
+	expectedRule := createNewAnalyticsRule(t, collectionName, eventName)
 
 	results, err := typesenseClient.Analytics().Rules().Retrieve(context.Background())
 
 	require.NoError(t, err)
-	require.True(t, len(results) == 1, "number of rules is invalid")
+	require.True(t, len(results) >= 1, "number of rules is invalid")
 
-	require.Equal(t, expectedRule, results[0])
+	var result *api.AnalyticsRuleSchema
+	for _, rule := range results {
+		if rule.Name == expectedRule.Name {
+			result = rule
+			break
+		}
+	}
+
+	require.NotNil(t, result, "rule not found")
+	require.Equal(t, expectedRule, result)
 }
